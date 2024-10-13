@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/matiqueue/DiscordDB#readme",
   "devDependencies": {
-    "np": "^10.0.7",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.3"
