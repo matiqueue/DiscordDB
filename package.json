@@ -6,7 +6,6 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "jest",
     "build": "tsup",
     "dev": "ts-node src/index.ts",
     "release": "np"
