@@ -1,44 +1,46 @@
-import { DiscordBase } from "../src/config/main"
-import { type BaseConfig } from "../src/types/types"
+import { type BaseConfig, DiscordBase } from "../src/index"
 
 describe("DiscordBase", () => {
   let config: BaseConfig
-  let base: DiscordBase
 
   beforeEach(() => {
     config = {
-      serverId: "1234567890",
-      botId: "bot123456789",
-      botSecret: "super-secret",
-      botToken: "bot-token",
-      databaseName: "my-discord-db",
+      serverId: "123",
+      botId: "abc",
+      botSecret: "secret",
+      botToken: "token",
+      databaseName: "testDB",
       createdAt: new Date(),
-      ownerId: "owner123456789",
+      ownerId: "owner123",
       provider: "discord",
       loggingEnabled: true,
-      cacheTimeout: 3600,
-      maxRetries: 5,
+      cacheTimeout: 5000,
+      maxRetries: 3,
     }
-
-    base = new DiscordBase(config)
   })
 
-  test("should create a new DiscordBase instance with the correct properties", () => {
-    expect(base.serverId).toBe("1234567890")
-    expect(base.databaseName).toBe("my-discord-db")
-    expect(base.loggingEnabled).toBe(true)
-    expect(base.maxRetries).toBe(5)
+  test("Should initialize with correct config values", () => {
+    const discordBase = new DiscordBase(config)
+    expect(discordBase.serverId).toBe("123")
+    expect(discordBase.botId).toBe("abc")
+    expect(discordBase.databaseName).toBe("testDB")
+    expect(discordBase.loggingEnabled).toBe(true)
   })
 
-  test("should update the databaseName correctly", () => {
-    base.update({ databaseName: "updated-db-name" })
-    expect(base.databaseName).toBe("updated-db-name")
-    expect(base.updatedAt).toBeDefined()
+  test("Should update values correctly", () => {
+    const discordBase = new DiscordBase(config)
+    const updatedConfig = { databaseName: "newDB", loggingEnabled: false }
+    discordBase.update(updatedConfig)
+    expect(discordBase.databaseName).toBe("newDB")
+    expect(discordBase.loggingEnabled).toBe(false)
+    expect(discordBase.updatedAt).toBeInstanceOf(Date)
   })
 
-  test("should log the correct config", () => {
-    console.log = jest.fn() // Mockowanie funkcji console.log
-    base.printConfig()
-    expect(console.log).toHaveBeenCalled()
+  test("Should log config correctly", () => {
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {})
+    const discordBase = new DiscordBase(config)
+    discordBase.printConfig()
+    expect(consoleSpy).toHaveBeenCalled()
+    consoleSpy.mockRestore()
   })
 })

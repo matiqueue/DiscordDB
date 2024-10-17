@@ -1,4 +1,4 @@
-import { BaseConfig } from "../types/types"
+import { type BaseConfig } from "../types/base-config"
 
 export class DiscordBase {
   public serverId: string
@@ -35,7 +35,7 @@ export class DiscordBase {
 
   update(updatedConfig: Partial<BaseConfig>): void {
     Object.assign(this, updatedConfig)
-    this.updatedAt = new Date()
+    this.updatedAt = new Date() // Aktualizacja daty modyfikacji
   }
 
   printConfig(): void {
