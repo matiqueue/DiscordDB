@@ -6,7 +6,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo 'No tests configured'",
+    "test": "jest",
     "build": "tsup",
     "dev": "ts-node src/index.ts",
     "release": "np"
@@ -28,6 +28,9 @@
   },
   "homepage": "https://github.com/matiqueue/DiscordDB#readme",
   "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.0",
     "typescript": "^5.6.3"
