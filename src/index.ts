@@ -8,4 +8,4 @@ export { DatabaseManager } from "./core/database-manager"
 export type { BaseConfig } from "./types/base-config"
 
 // Eksport utils
-export { logger } from "./utils/logger"
+export { logger, error } from "./utils/logger"
