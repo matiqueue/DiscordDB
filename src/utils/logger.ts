@@ -5,3 +5,7 @@ export function logger(message: string): void {
 export function error(message: string): void {
   console.error(`[ERROR]: ${message}`)
 }
+
+export function warn(message: string): void {
+  console.warn(`[WARN]: ${message}`)
+}
