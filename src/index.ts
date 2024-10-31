@@ -1,4 +1,5 @@
-import Database from './database'
-import { DatabaseOptions } from './interfaces/database-options'
+import Database from './core/database'
+import Bot from './core/bot'
+import { DatabaseOptions } from './types/database-options'
 
-export { Database, type DatabaseOptions }
+export { Database, Bot, type DatabaseOptions }
