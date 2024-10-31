@@ -2,5 +2,5 @@
 /node_modules
 /__tests__
 
-.env
+.env*
 .DS_Store
