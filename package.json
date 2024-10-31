@@ -1,6 +1,6 @@
 {
   "name": "discord-base",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "description": "A NoSQL-like database using Discord.js",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
