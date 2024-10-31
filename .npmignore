@@ -1,6 +1,7 @@
 /src
 /node_modules
 /__tests__
+/examples
 
 .env
 .DS_Store
@@ -8,3 +9,7 @@
 tsconfig.json
 tsup.config.ts
 jest.config.ts
+.gitignore
+.prettierrc
+elint.config.mjs
+README.md

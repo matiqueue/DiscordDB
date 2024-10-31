@@ -1,5 +1,4 @@
-// Eksport modeli
-export * from "./models/discord-base"
+import Database from './database'
+import { DatabaseOptions } from './interfaces/database-options'
 
-// Eksport typów
-export * from "./types/base-config"
+export { Database, type DatabaseOptions }

@@ -1,11 +1,9 @@
-export function logger(message: string): void {
-  console.log(`[LOG]: ${message}`)
+// src/utils/logger.ts
+
+export function log(...args: string[]): void {
+  console.log('[DiscordBase]', ...args)
 }
 
-export function error(message: string): void {
-  console.error(`[ERROR]: ${message}`)
-}
-
-export function warn(message: string): void {
-  console.warn(`[WARN]: ${message}`)
+export function error(...args: string[]): void {
+  console.error('[DiscordBase ERROR]', ...args)
 }
