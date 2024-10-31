@@ -10,7 +10,7 @@ export interface DefaultProviderOptions {
 export interface CustomProviderOptions {
   serverId: string
   provider: 'custom'
-  bot: Bot
+  botProvider: Bot
 }
 
 export type DatabaseOptions = DefaultProviderOptions | CustomProviderOptions
