@@ -1,9 +1,9 @@
 export default class Bot {
   public botId: string
-  public botSecret: string
+  public botToken: string
 
-  constructor(botId: string, botSecret: string) {
+  constructor(botId: string, botToken: string) {
     this.botId = botId
-    this.botSecret = botSecret
+    this.botToken = botToken
   }
 }

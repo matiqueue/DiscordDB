@@ -18,7 +18,7 @@ export default class DiscordClient {
       logError('Błąd połączenia z Discordem:', err)
     })
 
-    this.client.login(bot.botSecret).catch((err) => {
+    this.client.login(bot.botToken).catch((err) => {
       logError('Błąd logowania do Discorda:', err)
     })
   }

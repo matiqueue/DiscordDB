@@ -15,7 +15,7 @@ export default class Database {
     this.serverId = options.serverId
 
     if (options.provider === 'default') {
-      this.provider = new Bot('defaultBotId', 'defaultBotSecret')
+      this.provider = new Bot('defaultBotId', 'defaultBotToken')
     } else if (options.provider === 'custom') {
       this.provider = options.botProvider
     } else {
@@ -50,5 +50,12 @@ export default class Database {
       logError('Błąd podczas pobierania serwera:', error)
       throw error
     }
+  }
+
+  public async listGuilds() {
+    const guilds = await this.client.client.guilds.fetch()
+    guilds.forEach((guild) => {
+      console.log(`Guild ID: ${guild.id}, Guild Name: ${guild.name}`)
+    })
   }
 }
