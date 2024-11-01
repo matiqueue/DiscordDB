@@ -11,5 +11,4 @@ tsup.config.ts
 jest.config.ts
 .gitignore
 .prettierrc
-elint.config.mjs
-README.md
+eslint.config.mjs

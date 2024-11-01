@@ -1,4 +1,4 @@
-import { Database, Bot } from '../src/index'
+import { Database, Bot } from '../../src/index'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: ['.env.local', '.env'] })
