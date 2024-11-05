@@ -1,7 +1,7 @@
-import { Database } from '../../src/index'
+import { Database } from 'discord-base'
 
 const db = new Database({
-  serverId: '1301543581260976139',
+  serverId: 'YOUR SERVER ID',
   provider: 'default',
 })
 ;(async () => {

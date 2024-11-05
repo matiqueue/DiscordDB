@@ -1,7 +1,8 @@
-import { Guild } from 'discord.js'
+import { Guild, TextChannel } from 'discord.js'
 import Bot from './bot'
 import { DatabaseOptions } from '../types/database-options'
 import DiscordClient from '../connection/discord-client'
+import Collection from './collection'
 import { log, error as logError } from '../utils/logger'
 
 export default class Database {
@@ -52,10 +53,34 @@ export default class Database {
     }
   }
 
-  public async listGuilds() {
-    const guilds = await this.client.client.guilds.fetch()
-    guilds.forEach((guild) => {
-      console.log(`Guild ID: ${guild.id}, Guild Name: ${guild.name}`)
-    })
+  /**
+   * Pobiera istniejącą kolekcję (kanał tekstowy) lub tworzy nową.
+   * Metoda jest generyczna, co pozwala na określenie typu danych przechowywanych w kolekcji.
+   * @param name Nazwa kolekcji (kanału tekstowego).
+   * @returns Instancja klasy Collection reprezentująca kanał.
+   */
+  public async getCollection<T>(name: string): Promise<Collection<T>> {
+    if (!this.guild) {
+      throw new Error('Klient nie został zainicjalizowany.')
+    }
+
+    let channel = this.guild.channels.cache.find(
+      (ch) => ch.name === name && ch.isTextBased(),
+    ) as TextChannel | undefined
+
+    if (!channel) {
+      try {
+        channel = await this.guild.channels.create({
+          name: name,
+          type: 0, // GUILD_TEXT w discord.js v14
+        })
+        log(`Utworzono nową kolekcję: ${name}`)
+      } catch (err) {
+        logError(`Błąd podczas tworzenia kolekcji ${name}:`, err)
+        throw err
+      }
+    }
+
+    return new Collection<T>(channel, this.client.client, this.guild)
   }
 }

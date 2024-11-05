@@ -1,4 +1,4 @@
-import { Database, Bot } from '../../src/index'
+import { Database, Bot } from 'discord-base'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: ['.env.local', '.env'] })
@@ -9,7 +9,7 @@ const myBot = new Bot(
 )
 
 const db = new Database({
-  serverId: '1301543581260976139',
+  serverId: 'YOUR SERVER ID',
   provider: 'custom',
   botProvider: myBot,
 })
