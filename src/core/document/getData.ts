@@ -1,6 +1,5 @@
-// src/core/document/getData.ts
 import { Message } from 'discord.js'
-import { error as logError } from '../../utils/logger'
+import { logError } from '../../utils/logger'
 
 export default async function getData<T>(message: Message): Promise<T> {
   try {

@@ -1,13 +1,13 @@
-// src/core/collection/collection.ts
 import { TextChannel, Client, Guild } from 'discord.js'
 import Document from '../document/document'
+import { logError } from '../../utils/logger'
 import createDocument from './createDocument'
 import getDocument from './getDocument'
 import getAllDocuments from './getAllDocuments'
 import findDocument from './findDocument'
 import deleteCollection from './deleteCollection'
 
-export default class Collection<T> {
+export default class Collection<T extends { id: string }> {
   private channel: TextChannel
   private client: Client
   private guild: Guild
@@ -19,6 +19,14 @@ export default class Collection<T> {
   }
 
   public async createDocument(data: T): Promise<Document<T>> {
+    // Sprawdzenie unikalności ID przed utworzeniem dokumentu
+    const existingDoc = await this.findDocument((doc) => doc.id === data.id)
+    if (existingDoc) {
+      logError(
+        `Dokument z ID ${data.id} już istnieje w kolekcji ${this.channel.name}.`,
+      )
+      throw new Error(`Dokument z ID ${data.id} już istnieje w kolekcji.`)
+    }
     return createDocument(this.channel, this.client, data)
   }
 

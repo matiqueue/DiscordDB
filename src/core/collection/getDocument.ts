@@ -1,7 +1,6 @@
-// src/core/collection/getDocument.ts
 import { TextChannel, Client } from 'discord.js'
 import Document from '../document/document'
-import { error as logError } from '../../utils/logger'
+import { logError } from '../../utils/logger'
 
 export default async function getDocument<T>(
   channel: TextChannel,
@@ -13,6 +12,6 @@ export default async function getDocument<T>(
     return new Document<T>(message, client)
   } catch (err) {
     logError(`Błąd podczas pobierania dokumentu o ID ${messageId}:`, err)
-    throw err
+    throw new Error(`Nie udało się pobrać dokumentu o ID ${messageId}.`)
   }
 }

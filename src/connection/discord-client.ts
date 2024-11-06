@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from 'discord.js'
 import Bot from '../core/bot'
-import { log, error as logError } from '../utils/logger'
+import { log, logError } from '../utils/logger'
 
 export default class DiscordClient {
   public client: Client

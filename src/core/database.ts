@@ -1,17 +1,16 @@
-// src/core/database.ts
 import { Guild, TextChannel } from 'discord.js'
-import Bot from './bot'
+import Bot from '../core/bot'
 import { DatabaseOptions } from '../types/database-options'
 import DiscordClient from '../connection/discord-client'
-import Collection from './collection/collection'
-import { log, error as logError } from '../utils/logger'
+import Collection from '../core/collection/collection'
+import { log, logError } from '../utils/logger'
 
 export default class Database {
   public serverId: string
   private provider: Bot
   private client: DiscordClient
   private guild: Guild | null = null
-  public ready: Promise<void>
+  private ready: boolean = false
 
   constructor(options: DatabaseOptions) {
     this.serverId = options.serverId
@@ -19,6 +18,11 @@ export default class Database {
     if (options.provider === 'default') {
       this.provider = new Bot('defaultBotId', 'defaultBotToken')
     } else if (options.provider === 'custom') {
+      if (!options.botProvider) {
+        throw new Error(
+          'W przypadku provider "custom", należy dostarczyć botProvider.',
+        )
+      }
       this.provider = options.botProvider
     } else {
       throw new Error(
@@ -28,30 +32,40 @@ export default class Database {
 
     this.client = new DiscordClient(this.provider)
 
-    this.ready = new Promise<void>((resolve, reject) => {
-      this.client.client.once('ready', () => {
-        log('Klient Discord jest gotowy.')
-        this.initialize().then(resolve).catch(reject)
+    // Rozpoczęcie inicjalizacji
+    this.initialize()
+      .then(() => {
+        this.ready = true
+        log('Baza danych jest gotowa do użycia.')
+      })
+      .catch((error) => {
+        logError('Błąd inicjalizacji bazy danych:', error)
+      })
+  }
+
+  private async initialize(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.client.client.once('ready', async () => {
+        try {
+          this.guild = await this.client.client.guilds.fetch(this.serverId)
+          if (!this.guild) {
+            throw new Error(
+              `Serwer o ID ${this.serverId} nie został znaleziony.`,
+            )
+          }
+          log(`Połączono z serwerem: ${this.guild.name}`)
+          resolve()
+        } catch (error) {
+          logError('Błąd podczas pobierania serwera:', error)
+          reject(error)
+        }
       })
 
-      this.client.client.on('error', (error) => {
+      this.client.client.on('error', (error: unknown) => {
         logError('Klient Discord napotkał błąd:', error)
         reject(error)
       })
     })
-  }
-
-  private async initialize() {
-    try {
-      this.guild = await this.client.client.guilds.fetch(this.serverId)
-      if (!this.guild) {
-        throw new Error(`Serwer o ID ${this.serverId} nie został znaleziony.`)
-      }
-      log(`Połączono z serwerem: ${this.guild.name}`)
-    } catch (error) {
-      logError('Błąd podczas pobierania serwera:', error)
-      throw error
-    }
   }
 
   /**
@@ -60,9 +74,14 @@ export default class Database {
    * @param name Nazwa kolekcji (kanału tekstowego).
    * @returns Instancja klasy Collection reprezentująca kanał.
    */
-  public async getCollection<T>(name: string): Promise<Collection<T>> {
-    if (!this.guild) {
-      throw new Error('Klient nie został zainicjalizowany.')
+  public async getCollection<T extends { id: string }>(
+    name: string,
+  ): Promise<Collection<T>> {
+    if (!this.ready || !this.guild) {
+      logError('Baza danych nie jest jeszcze gotowa.')
+      throw new Error(
+        'Baza danych nie jest jeszcze gotowa. Spróbuj ponownie później.',
+      )
     }
 
     let channel = this.guild.channels.cache.find(
@@ -78,7 +97,7 @@ export default class Database {
         log(`Utworzono nową kolekcję: ${name}`)
       } catch (err) {
         logError(`Błąd podczas tworzenia kolekcji ${name}:`, err)
-        throw err
+        throw new Error(`Nie udało się utworzyć kolekcji ${name}.`)
       }
     }
 

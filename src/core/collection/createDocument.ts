@@ -1,9 +1,8 @@
-// src/core/collection/createDocument.ts
 import { TextChannel, Client } from 'discord.js'
 import Document from '../document/document'
-import { error as logError } from '../../utils/logger'
+import { logError } from '../../utils/logger'
 
-export default async function createDocument<T>(
+export default async function createDocument<T extends { id: string }>(
   channel: TextChannel,
   client: Client,
   data: T,
@@ -14,6 +13,6 @@ export default async function createDocument<T>(
     return new Document<T>(message, client)
   } catch (err) {
     logError('Błąd podczas tworzenia dokumentu:', err)
-    throw err
+    throw new Error('Nie udało się utworzyć dokumentu.')
   }
 }

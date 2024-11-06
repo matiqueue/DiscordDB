@@ -1,4 +1,3 @@
-// src/core/document/document.ts
 import { Message, Client } from 'discord.js'
 import getData from './getData'
 import updateData from './updateData'

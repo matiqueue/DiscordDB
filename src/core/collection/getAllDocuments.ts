@@ -1,7 +1,6 @@
-// src/core/collection/getAllDocuments.ts
 import { TextChannel, Client } from 'discord.js'
 import Document from '../document/document'
-import { error as logError } from '../../utils/logger'
+import { logError } from '../../utils/logger'
 
 export default async function getAllDocuments<T>(
   channel: TextChannel,
@@ -18,6 +17,6 @@ export default async function getAllDocuments<T>(
     return documents
   } catch (err) {
     logError('Błąd podczas pobierania wszystkich dokumentów:', err)
-    throw err
+    throw new Error('Nie udało się pobrać wszystkich dokumentów.')
   }
 }
