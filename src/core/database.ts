@@ -1,8 +1,9 @@
+// src/core/database.ts
 import { Guild, TextChannel } from 'discord.js'
 import Bot from './bot'
 import { DatabaseOptions } from '../types/database-options'
 import DiscordClient from '../connection/discord-client'
-import Collection from './collection'
+import Collection from './collection/collection'
 import { log, error as logError } from '../utils/logger'
 
 export default class Database {

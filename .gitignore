@@ -1,6 +1,7 @@
 /dist
 /node_modules
 /__tests__
+/examples
 
 .env*
 .DS_Store
